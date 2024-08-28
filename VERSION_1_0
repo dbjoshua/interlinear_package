@@ -1,0 +1,3 @@
+version 1.0
+- initial release
+- main functionalities: interlinear environnement supporting SIL Field's Linguists Toolbox's markers; supporting optional customization and defined styles. Also supports four-lines interlinear gloss texts.

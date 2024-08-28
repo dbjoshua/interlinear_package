@@ -1,0 +1,215 @@
+\documentclass{article}
+%\usepackage{interlinear}
+\usepackage{xparse}
+\usepackage{verbatim}
+
+% Commande pour afficher du code (sans les délimiteurs `d```)
+\NewDocumentCommand{\code}{m}{\texttt{#1}}
+\def\interlinearstyle{$\backslash$interlinearstyle}
+
+% Commande pour du texte en gras
+\NewDocumentCommand{\bftext}{m}{\textbf{#1}}
+
+% Commande pour liste avec itemize
+\NewDocumentCommand{\itm}{m}{\begin{itemize}\item #1\end{itemize}}
+
+% Metadata
+\title{interlinear Package Documentation}
+\author{Akpoué Kouamé Josué}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Package Description}
+\subsection{Purpose}
+The \code{interlinear} package provides a new interface for typesetting interlinear texts. It is based on \code{cgloss4e.sty} and is designed to avoid conflicts with other packages, such as \code{linguex}. This package allows for the simultaneous use of \code{linguex} and \code{interlinear} by renaming commands from \code{cgloss4e.sty} for better clarity and maintenance. The package is part of a larger set of tools to facilitate linguistic document preparation using LaTeX.
+
+\subsection{What's New}
+
+\itm{\bftext{Toolbox Integration:} Support for SIL Linguists Field's Toolbox input (with some modifications). You can copy-paste the interlinear text from Toolbox directly into LaTeX.}
+\itm{\bftext{Four-Line Option:} Adds support for a fourth line (Part of speech) in interlinear texts.}
+\itm{\bftext{Markers:} New markers are provided for various parts of the example, including \code{\textbackslash ct} (context), \code{\textbackslash li} (language information), \code{\textbackslash lt} (literal translation), and \code{\textbackslash gj} (grammaticality judgments).}
+\itm{\bftext{Environment:} Defines an \code{interlinear} environment with options for fine-grained control over element appearance.}
+
+\section{Installation and Loading}
+To install, place \code{interlinear.sty} in a directory where LaTeX can find it. Load the package using:
+\begin{verbatim}
+\usepackage{interlinear}
+\end{verbatim}
+Alternatively, use:
+\begin{verbatim}
+\input{path/to/interlinear.sty}
+\end{verbatim}
+
+%\subsection{Required Packages}
+
+To ensure the proper functioning of the \texttt{interlinear} package, the following LaTeX packages are required:
+
+\begin{itemize}
+    \item \texttt{marginnote}: This package is used for creating margin notes in your document.
+    \item \texttt{xifthen}: Provides conditional commands for handling various logic in the package.
+    \item \texttt{xkeyval}: Used to implement key=value options for customizing the behavior of the \texttt{interlinear} environment.
+    \item \texttt{xparse}: Facilitates the definition of commands and environments with a more flexible interface.
+    \item \texttt{etoolbox}: Supplies advanced tools for programming within LaTeX, such as patching and extending existing commands.
+    \item \texttt{enumitem}: Allows customization of list environments (like \texttt{itemize}, \texttt{enumerate}, etc.), which may be used within \texttt{interlinear}.
+\end{itemize}
+
+Ensure that these packages are included in your LaTeX distribution.
+
+\section{Basic Usage}
+The main feature of \code{interlinear} is the \code{interlinear} environment. This environment allows you to structure interlinear texts using markers. Below is a comparison between \code{cgloss4e} and \code{interlinear} syntax.
+
+\subsection{Example 1: Two-Line Interlinear}
+\textbf{cgloss4e} code:
+\begin{verbatim}
+\gll lorem ipsum dolor\\
+     sit amet consegur\\
+\glt `Lorem ipsum dolor'
+\end{verbatim}
+
+\textbf{interlinear} code:
+\begin{verbatim}
+\begin{interlinear}
+\tx lorem ipsum dolor\\
+\gl sit amet consegur\\
+\ft `Lorem ipsum dolor'\\
+\end{interlinear}
+\end{verbatim}
+
+\subsection{Example 2: Three-Line Interlinear}
+\textbf{cgloss4e} code:
+\begin{verbatim}
+\glll lorem ipsum\\
+      dolor sit\\
+      amet consegur\\
+\glt `Lorem ipsum dolor'
+\end{verbatim}
+
+\textbf{interlinear} code:
+\begin{verbatim}
+\begin{interlinear}
+\tx lorem ipsum\\
+\mb dolor sit\\
+\gl amet consegur\\
+\ft `Lorem ipsum dolor'\\
+\end{interlinear}
+\end{verbatim}
+
+\subsection{Complete Example}
+\begin{verbatim}
+\begin{interlinear}
+\li Language\\
+\rf Identifier of the data in the corpus/corpora\\
+\ct Context\\
+\gj Grammaticality judgment\\
+\tx Object language text\\
+\mb Morpheme breaks\\
+\gl Glosses\\
+\ps Part-of-speech\\
+\ft Free translation\\
+\lt Literal translation\\
+\nt Extra note\\
+\end{interlinear}
+\end{verbatim}
+
+\section{Setting Options}
+The \code{interlinear} environment can be customized using the options described below.
+
+\subsection{Interlinear Lines Number}
+The number of interlinear lines is controlled by the \code{linesnumber} option. Possible values are 0, 2, 3, 4 (default is 2).
+
+\subsection{Markers and Customization}
+You can define custom markers for each part of the interlinear text:
+\begin{verbatim}
+\li languageinfomarker
+\rf referencemarker
+\ct contextmarker
+\gj gramjudgmarker
+\tx textmarker
+\mb morphbreakmarker
+\gl glossmarker
+\ps partofspeechmarker
+\ft freetranslationmarker
+\lt literaltranslationmarker
+\nt extranotemarker
+\end{verbatim}
+
+\subsection{Appearance Customization}
+You can modify the appearance of different elements using the following options:
+\begin{verbatim}
+lineoneformat    % First line format
+linetwoformat    % Second line format
+linethreeformat  % Third line format
+linefourformat   % Fourth line format
+exformat         % Example text format (no-interlinear mode)
+extranoteformat  % Extra note format
+contextnameformat % Context label format
+\end{verbatim}
+
+These options can control the font family, shape, series, size, and color. To specify multiple formatting options, enclose them in a group. For example, the command \code{lineoneformat=\{$\backslash$itshape$\backslash$bfseries$\backslash$small\}} will set the text on the first interlinear or gloss line to boldface italics in a small size. By default, all formats are set to \code{$\backslash$normalfont}.
+
+\subsection{Other Settings}
+Various other elements can be customized:
+
+\itm{The label indicating the context of the example can be changed using the \code{contextname} option. For instance, to change \code{Context:} to \code{Situation:}, use \code{contextname={Situation:}}.}
+
+\itm{The space between the context and the body of the example can be specified via the \code{contextvoffset} option.}
+
+\itm{By default, marginal notes are enclosed in parentheses \code{()}. To change this behavior, use the \code{extranoteleftpunct} and \code{extranoterightpunct} options. For example, to change the parentheses to square brackets \code{[]}, set \code{extranoteleftpunct={[}} and \code{extranoterightpunct={]}}. If you prefer no punctuation marks around your notes, set \code{extranoteleftpunct={}} and \code{extranoterightpunct={}}.}
+
+\itm{The placement of language information for the linguistic example is controlled by the \code{languageinfopos} option, which accepts two values: \code{head} and \code{margin}. The default value, \code{margin}, places this information in parentheses in the margin of the first line of the example. The \code{head} value places it in a separate line at the very beginning of the example, even before the context. When the no-interlinear mode is enabled, \code{languageinfopos} should be set to \code{head} to avoid positioning conflicts with marginal notes.}
+
+\subsection{Applying Options Outside the Environment}
+Options can also be specified outside the \code{interlinear} environment using the \code{\interlinearstyle} command, which takes one mandatory argument. This argument should contain the list of chosen options, and \code{\interlinearstyle} must be called before the environment.
+
+For example:
+\begin{verbatim}
+\begin{interlinear}[linesnumber=3,linefourformat=\itshape]
+(content)
+\end{interlinear}
+\end{verbatim}
+
+is equivalent to:
+\begin{verbatim}
+\interlinearstyle{linesnumber=3,linefourformat=\itshape} 
+\begin{interlinear}
+(content)
+\end{interlinear}
+\end{verbatim}
+
+The \code{$\backslash$interlinearstyle} command redefines the default values for the specified options. Therefore, each time this command is used, it updates the default values for the specified options.
+
+\subsection{Using Predefined and Custom Styles}
+One of the features of the \code{interlinear} package is the ability to define multiple styles and use them throughout the document without having to call \code{$\backslash$interlinearstyle} each time. There are four predefined styles:
+
+\begin{itemize}
+    \item \code{default}: Standard settings.
+    \item \code{gsr}: Sets the first interlinear line in italics.
+    \item \code{nointerlinear}: Configures the no-interlinear mode, changes the \code{$\backslash$ft} marker to \code{$\backslash$ot}, and sets \code{languageinfopos} to \code{head}. This style provides a safe way to configure the no-interlinear mode without worrying about the various parameters.
+    \item \code{gsrnointerlinear}: Similar to \code{nointerlinear}, but the text of the example is italicized.
+\end{itemize}
+
+There are two ways to apply a style:
+\begin{enumerate}
+\item Using the \code{$\backslash$UseInterlinearStyle\{\}} command before the \code{interlinear} environment, at the beginning of the document, or in the preamble.
+\item Using the dedicated \code{style} option in the optional argument of the \code{interlinear} environment.
+\end{enumerate}
+
+Example: \code{$\backslash$begin\{interlinear\}[style=gsr]}.
+
+It is recommended to specify the \code{style} option first when combining it with other options.
+
+You can also specify additional options alongside the style to customize it as needed (e.g., if you want to temporarily modify a style parameter).
+
+For example, the \code{gsr} style was declared using the following code:
+\begin{verbatim}
+\DeclareInterlinearStyle{gsr}{%
+  linesnumber=2,%
+  lineoneformat=\itshape,%
+  linetwoformat=\normalfont%
+}
+\end{verbatim}
+
+\end{document}

@@ -1,0 +1,6 @@
+hard marginnote # for marginnotes 
+hard xifthen 
+hard xkeyval # For key=val options
+hard xparse
+hard etoolbox
+hard enumitem
